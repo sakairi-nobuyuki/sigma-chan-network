@@ -1,4 +1,4 @@
-SRCS = db_oparators sigma_chan_db tweet_getter tests
+SRCS = typical_cnn
 POETRY_PREFIX = poetry run
 
 

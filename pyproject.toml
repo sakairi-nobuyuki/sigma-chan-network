@@ -8,6 +8,7 @@ authors = ["sakairi-nobuyuki <SAKAIRI.Nobuyuki@gmail.com>"]
 python = "^3.8"
 black = "^22.10.0"
 isort = "^5.10.1"
+torch = "<=1.12"
 
 [tool.poetry.dev-dependencies]
 
@@ -40,4 +41,4 @@ exclude = '''
 [tool.isort]
 profile = "black"
 line_length = 90
-skip_glob = ""
+skip_glob = "*/__init__.py"
