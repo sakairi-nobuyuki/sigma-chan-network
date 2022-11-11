@@ -9,6 +9,8 @@ python = "^3.8"
 black = "^22.10.0"
 isort = "^5.10.1"
 torch = "<=1.12"
+torchvision = "^0.13.0"
+tqdm = "^4.64.1"
 
 [tool.poetry.dev-dependencies]
 
