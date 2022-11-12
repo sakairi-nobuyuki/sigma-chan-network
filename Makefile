@@ -2,7 +2,7 @@ SRCS = sigma_chan_network tests
 TEST_TARGET = sigma_chan_network
 POETRY_PREFIX = poetry run
 LINTER_IGNORE = scripts
-PATH_TEST_COV_BADGE = pics
+PATH_TEST_COV_BADGE = pics/cov.svg
 
 format:
 	@for SRC in $(SRCS); do $(POETRY_PREFIX) black $$SRC --config pyproject.toml; done
