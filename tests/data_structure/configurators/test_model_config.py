@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from typical_cnn.data_structure.configrators import ModelConfig
+from sigma_chan_network.data_structure.configrators import ModelConfig
 
 
 class TestModelConfig:
