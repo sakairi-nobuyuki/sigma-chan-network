@@ -13,6 +13,7 @@ from pathlib import Path
 import shutil
 import glob
 from tqdm import tqdm
+import datetime
 
 app = typer.Typer()
 data_dir = str(Path(os.path.abspath(__file__)).parent.parent)
@@ -117,8 +118,24 @@ def train(n_epoch: int = 50):
         val_accs.append(val_running_acc)
         print(f">> {epoch} th epoch: \n>>  train loss: {running_loss}, train acc: {running_acc}\n  >>  val loss: {val_running_loss}, val acc: {val_running_acc}")
 
-
-
+        model_path = os.path.join(data_dir, "models", datetime.datetime.now().strftime("%Y%m%d"), "{:04}.pth".format(epoch))
+        print(f">> model_path: {model_path}")
+        
+        if not os.path.exists(os.path.dirname(model_path)):
+            os.makedirs(os.path.dirname(model_path))
+        
+        if epoch == 0:
+            torch.save({"epoch": epoch,
+                "model_state_dict": model.state_dict(),
+                "optimizer_state_dict": optimizer.state_dict(),
+                "loss": val_losses[-1]}, model_path)
+        elif epoch > 0:
+            if val_losses[-1] == min(val_losses):
+                torch.save({"epoch": epoch,
+                    "model_state_dict": model.state_dict(),
+                    "optimizer_state_dict": optimizer.state_dict(),
+                    "loss": val_losses[-1]}, model_path)
+                    
 
 class SigmaChanCnn(nn.Module):
     def __init__(self, num_classes: int = 2) -> None:
