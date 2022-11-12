@@ -11,6 +11,8 @@ isort = "^5.10.1"
 torch = "<=1.12"
 torchvision = "^0.13.0"
 tqdm = "^4.64.1"
+pytest = "^7.2.0"
+pydantic = "^1.10.2"
 
 [tool.poetry.dev-dependencies]
 

@@ -1,4 +1,4 @@
-SRCS = typical_cnn
+SRCS = typical_cnn tests
 POETRY_PREFIX = poetry run
 
 
