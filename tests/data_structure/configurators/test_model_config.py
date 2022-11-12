@@ -25,6 +25,7 @@ class TestModelConfig:
 
         assert isinstance(config, ModelConfig)
         assert isinstance(config.input_dim, dict)
+
         assert config.input_dim_x == mock_model_config_different_dims["input_dim"]["x"]
         assert config.input_dim_y == mock_model_config_different_dims["input_dim"]["y"]
 
