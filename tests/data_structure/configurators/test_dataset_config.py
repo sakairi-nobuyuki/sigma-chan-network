@@ -2,7 +2,7 @@
 
 import pytest
 
-from typical_cnn.data_structure.configrators import DatasetConfig
+from sigma_chan_network.data_structure.configrators import DatasetConfig
 
 
 class TestDatasetConfig:

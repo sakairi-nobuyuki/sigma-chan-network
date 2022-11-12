@@ -2,7 +2,7 @@
 
 from typing import Optional
 
-from pydantic import BaseModel, PositiveFloat, root_validator, validator
+from pydantic import BaseModel, PositiveFloat, root_validator
 
 
 class DatasetConfig(BaseModel):
