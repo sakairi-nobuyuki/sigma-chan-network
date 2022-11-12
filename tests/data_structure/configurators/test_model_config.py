@@ -13,7 +13,7 @@ class TestModelConfig:
         """Testing basic model configuration"""
         config = ModelConfig(**mock_model_config)
 
-        assert (config, ModelConfig)
+        assert isinstance(config, ModelConfig)
         assert isinstance(config.input_dim, int)
         assert config.input_dim == mock_model_config["input_dim"]
         assert config.input_dim_x == config.input_dim
