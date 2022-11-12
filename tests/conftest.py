@@ -2,4 +2,3 @@
 
 
 from fixtures.configurators_fixtures import *
-
