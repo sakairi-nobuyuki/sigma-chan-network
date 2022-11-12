@@ -13,7 +13,8 @@ class ModelConfig(BaseModel):
 
     """
 
-    num_classes: PositiveInt
+    n_classes: PositiveInt
+    n_channels_last_layer: PositiveInt = 128
     input_dim: Union[PositiveInt, Dict[str, PositiveInt]] = 224
     input_dim_x: Optional[PositiveInt] = None
     input_dim_y: Optional[PositiveInt] = None

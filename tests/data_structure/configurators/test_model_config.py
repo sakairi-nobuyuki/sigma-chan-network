@@ -33,7 +33,7 @@ class TestModelConfig:
         """Testing validators"""
         config_dict = mock_model_config
         print("config dict: ", config_dict)
-        config_dict["num_classes"] = num_classes
+        config_dict["n_classes"] = num_classes
 
         with pytest.raises(ValidationError):
             config = ModelConfig(**config_dict)
