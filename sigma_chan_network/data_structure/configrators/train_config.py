@@ -5,6 +5,7 @@ from pydantic import BaseModel
 
 class TrainConfig(BaseModel):
     """Train config"""
+    n_epoch: int = 50
     cloud_storage: StorageConfig
     local_storage: StorageConfig
     model: ModelConfig
