@@ -1,7 +1,9 @@
 # coding: utf-8
 
-import boto3
 from typing import List
+
+import boto3
+
 from sigma_chan_network.data_structure.configrators import StorageConfig
 from sigma_chan_network.io import AbstractStorage
 
@@ -78,7 +80,7 @@ class S3Storage(AbstractStorage):
         Args:
             file_path_local (str): File path in local.
             file_path_storage (str): File path in the storage.
-            
+
         Returns:
             bool: True for success, else False.
         """
@@ -90,8 +92,7 @@ class S3Storage(AbstractStorage):
         Returns:
             List[str]: File path list
         """
-        
+
         blob_files = self.bucket.objects.filter(Prefix=self.config.dir_name)
-        
+
         return [file_obj.key for file_obj in blob_files]
-            

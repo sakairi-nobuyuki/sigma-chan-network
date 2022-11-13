@@ -2,6 +2,7 @@
 
 from abc import ABCMeta, abstractmethod
 from typing import List
+
 from sigma_chan_network.data_structure.configrators import StorageConfig
 
 
@@ -46,7 +47,6 @@ class AbstractStorage(metaclass=ABCMeta):
         """
         pass
 
-
     @abstractmethod
     def download_file(self, file_path_storage: str, file_path_local: str) -> bool:
         """Dowunloading a file from a storage.
@@ -67,7 +67,7 @@ class AbstractStorage(metaclass=ABCMeta):
         Args:
             file_path_local (str): File path in local.
             file_path_storage (str): File path in the storage.
-            
+
         Returns:
             bool: True for success, else False.
         """
