@@ -6,7 +6,7 @@ from sigma_chan_network.components.operators import download_data
 from sigma_chan_network.data_structure.configrators import TrainConfig
 from sigma_chan_network.io import S3Storage
 
-
+@pytest.mark.skip
 def test_downloader(mock_train_config):
     """Testing downloader"""
     print(mock_train_config)
