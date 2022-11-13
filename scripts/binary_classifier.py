@@ -65,7 +65,6 @@ def train_local(job_id: str, parameters_path: str):
 
 @app.command()
 def train(job_id: str, parameters_str: str):
-#def train(n_epoch: int = 50):
     print("Do something with cnn")
     print("Pamameters configuring:")
     parameters_dict = json.loads(parameters_str)
@@ -80,7 +79,6 @@ def train(job_id: str, parameters_str: str):
     print("is cuda available? ", device)
     print("Configuring the model")
     model = SigmaChanCNN(config.model)
-    #model = SigmaChanCnn(num_classes = 2)
     model.to(device)
 
     criterion = nn.CrossEntropyLoss()
@@ -163,40 +161,6 @@ def train(job_id: str, parameters_str: str):
                     "optimizer_state_dict": optimizer.state_dict(),
                     "loss": val_losses[-1]}, model_path)
                     
-
-class SigmaChanCnn(nn.Module):
-    def __init__(self, num_classes: int = 2) -> None:
-        super().__init__()
-        print(">> initializing model")
-        self.features = nn.Sequential(
-            nn.Conv2d(in_channels=3, out_channels=64, kernel_size=5, padding=2),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=2),
-            nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=2),
-            nn.Conv2d(in_channels=128, out_channels=256, kernel_size=3, padding=1),
-            nn.ReLU(inplace=True),
-            nn.MaxPool2d(kernel_size=2),
-            nn.Conv2d(in_channels=256, out_channels=128, kernel_size=3, padding=1),
-            nn.ReLU(inplace=True),
-        )
-
-        print(">>   model layers: ", self.features)
-        print(">> creating classifier")
-        
-        self.classifier = nn.Linear(in_features = 28 * 28 * 128,   out_features=num_classes)
-        print(">>   classifier content: ", self.classifier)
-
-    def forward(self, x) -> None:
-
-        x = self.features(x)
-        x = x.view(x.size(0), -1)
-        x = self.classifier(x)
-
-        return x
-
-
 @app.command()
 def prepare_dataset(weight_val: float = 0.3, weight_test: float = 0.1):
     print("Preparing dataset")

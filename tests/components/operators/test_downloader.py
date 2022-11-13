@@ -1,10 +1,11 @@
 # coding: utf-8
 
-from sigma_chan_network.data_structure.configrators import TrainConfig
+import os
+
 from sigma_chan_network.components.operators import download_data
+from sigma_chan_network.data_structure.configrators import TrainConfig
 from sigma_chan_network.io import S3Storage
 
-import os
 
 def test_downloader(mock_train_config):
     """Testing downloader"""

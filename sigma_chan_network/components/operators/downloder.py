@@ -1,13 +1,15 @@
 # coding: utf-8
 
 import os
-from sigma_chan_network.io import S3Storage
+
 from sigma_chan_network.data_structure.configrators import StorageConfig
+from sigma_chan_network.io import S3Storage
+
 
 def download_data(s3: S3Storage, local_storage_config: StorageConfig) -> bool:
     """Download data from cloud storage to the local storage
 
-    In the storage: 
+    In the storage:
         url: s3://bucket-name/storage-dir-name/
         bucket_name: bucket-name
         dir_name: storage-dir-name/
@@ -21,7 +23,7 @@ def download_data(s3: S3Storage, local_storage_config: StorageConfig) -> bool:
     Returns:
         bool: True if succeeded, else False.
     """
-    
+
     ### create local file path
     for file_path in s3.blob:
         local_file_path = os.path.join(local_storage_config.dir_name, file_path)

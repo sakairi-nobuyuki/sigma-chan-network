@@ -10,7 +10,6 @@ class DatasetConfig(BaseModel):
     weight_test: Optional[PositiveFloat] = 0.1
     weight_train: Optional[PositiveFloat]
 
-
     @root_validator
     def __validata_train_weight(cls, values):
         if values["weight_test"] + values["weight_val"] > 1.0:
