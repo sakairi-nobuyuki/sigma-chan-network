@@ -6,7 +6,7 @@ from sigma_chan_network.data_structure.configrators import StorageConfig
 from sigma_chan_network.io import S3Storage
 
 
-
+@pytest.mark.skip
 class TestS3Storage:
     """Testing S3 storage"""
 
