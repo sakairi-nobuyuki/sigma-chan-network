@@ -9,7 +9,7 @@ class DatasetConfig(BaseModel):
     weight_val: Optional[PositiveFloat] = 0.2
     weight_test: Optional[PositiveFloat] = 0.1
     weight_train: Optional[PositiveFloat]
-    data_path: Optional[str] = "data"
+
 
     @root_validator
     def __validata_train_weight(cls, values):

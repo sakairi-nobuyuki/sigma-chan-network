@@ -22,7 +22,7 @@ class ModelConfig(BaseModel):
     learning_rate: PositiveFloat = 0.001
     weight_decay: PositiveFloat = 1.0e-04
 
-    @root_validator(pre=True)
+    @root_validator(pre=False)
     def __validate_input_dim(cls, values):
         """Validation for input dimension
 
