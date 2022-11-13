@@ -16,6 +16,7 @@ pylint = "^2.15.5"
 pytest = "^7.2.0"
 pytest-cov = "^4.0.0"
 coverage-badge = "^1.1.0"
+boto3 = "^1.26.8"
 
 [tool.poetry.dev-dependencies]
 
