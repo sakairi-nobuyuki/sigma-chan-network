@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import os
+import pytest
 
 from sigma_chan_network.components.operators import download_data
 from sigma_chan_network.data_structure.configrators import TrainConfig
