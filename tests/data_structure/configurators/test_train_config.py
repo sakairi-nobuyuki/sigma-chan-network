@@ -11,4 +11,7 @@ class TestTrainConfig:
         config = TrainConfig(**mock_train_config)
 
         assert isinstance(config, TrainConfig)
-        assert config.local_storage.dir_name == mock_train_config["local_storage"]["dir_name"]
+        assert (
+            config.local_storage.dir_name
+            == mock_train_config["local_storage"]["dir_name"]
+        )
