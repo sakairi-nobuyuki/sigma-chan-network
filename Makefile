@@ -11,5 +11,5 @@ format:
 lint:
 	@for SRC in $(SRCS); do $(POETRY_PREFIX) pylint --fail-under 6.0 $$SRC --exit-zero ; done
 test:
-	$(POETRY_PREFIX) pytest --cov=$(TEST_TARGET) --cov-fail-under 80
+	$(POETRY_PREFIX) pytest --cov=$(TEST_TARGET) --cov-fail-under 60
 	$(POETRY_PREFIX) coverage-badge -fo $(PATH_TEST_COV_BADGE)
