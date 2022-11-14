@@ -25,8 +25,19 @@ def download_data(s3: S3Storage, local_storage_config: StorageConfig) -> bool:
     """
 
     ### create local file path
-    for file_path in s3.blob:
-        local_file_path = os.path.join(local_storage_config.dir_name, file_path)
+    print("Downloading data from the storage")
+    local_file_path_list = [
+        os.path.join(
+            local_storage_config.dir_name,
+            "train_data/original",
+            *file_path.split("/")[-2:]
+        )
+        for file_path in s3.blob
+    ]
+    print(">> characteristic local file path: ", local_file_path_list[0])
+    print(">> downloading...")
+    for local_file_path, file_path in zip(local_file_path_list, s3.blob):
+        # local_file_path = os.path.join(local_storage_config.dir_name, file_path)
         dir_path = os.path.dirname(local_file_path)
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)

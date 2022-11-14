@@ -6,7 +6,9 @@ import pytest
 @pytest.fixture
 def mock_model_config():
     """Model config mock for CNN"""
-    return dict(n_classes=2, input_dim=224, batch_size=64, learning_rate=0.001, weight_decay=0.001)
+    return dict(
+        n_classes=2, input_dim=224, batch_size=64, learning_rate=0.001, weight_decay=0.001
+    )
 
 
 @pytest.fixture
