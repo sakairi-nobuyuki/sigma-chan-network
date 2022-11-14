@@ -21,9 +21,11 @@ class S3Storage(AbstractStorage):
         Args:
             config (StorageConfig): Configuration dataclass of storages by pydantic
         """
+        print("Initializing the S3 instance")
         super().__init__(config)
         if self.config.type != "s3":
             raise NotImplementedError(f"{type} is not implemented.")
+        print(">> initialize the resource")
         self.s3_resource = boto3.resource(
             service_name="s3",
             endpoint_url=self.config.endpoint_url,
@@ -31,8 +33,11 @@ class S3Storage(AbstractStorage):
             aws_secret_access_key=self.config.access_key,
             region_name=self.config.region_name,
         )
+        print(">> set bucket name")
         self.bucket_name = self.config.bucket_name
+        print(">> initialize the bucket")
         self.bucket = self.s3_resource.Bucket(self.bucket_name)
+        print(">> get blob")
         self.blob = self.get_blob()
 
     def save_data(self, data: bytes, file_name: str) -> bool:
@@ -84,7 +89,7 @@ class S3Storage(AbstractStorage):
         Returns:
             bool: True for success, else False.
         """
-        pass
+        self.bucket.upload_file(file_path_local, file_path_storage)
 
     def get_blob(self) -> List[str]:
         """Get file list in the storage

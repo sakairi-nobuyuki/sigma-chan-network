@@ -14,7 +14,7 @@ from pathlib import Path
 import shutil
 import glob
 from tqdm import tqdm
-import datetime
+from typing import List
 import json
 
 from sigma_chan_network.data_structure.configrators import TrainConfig
@@ -143,24 +143,32 @@ def train(job_id: str, parameters_str: str):
         val_accs.append(val_running_acc)
         print(f">> {epoch} th epoch: \n>>  train loss: {running_loss}, train acc: {running_acc}\n  >>  val loss: {val_running_loss}, val acc: {val_running_acc}")
 
-        model_path = os.path.join(data_dir, "models", datetime.datetime.now().strftime("%Y%m%d"), "{:04}.pth".format(epoch))
+        model_path = os.path.join(data_dir, "data/models", job_id, "{:04}.pth".format(epoch))
         print(f">> model_path: {model_path}")
         
         if not os.path.exists(os.path.dirname(model_path)):
             os.makedirs(os.path.dirname(model_path))
         
         if epoch == 0:
-            torch.save({"epoch": epoch,
-                "model_state_dict": model.state_dict(),
-                "optimizer_state_dict": optimizer.state_dict(),
-                "loss": val_losses[-1]}, model_path)
+            __save_model(epoch, model, optimizer, val_losses, model_path, config, s3)
         elif epoch > 0:
             if val_losses[-1] == min(val_losses):
-                torch.save({"epoch": epoch,
-                    "model_state_dict": model.state_dict(),
-                    "optimizer_state_dict": optimizer.state_dict(),
-                    "loss": val_losses[-1]}, model_path)
+                __save_model(epoch, model, optimizer, val_losses, model_path, config, s3)
+
                     
+def __save_model(epoch: int, model: SigmaChanCNN, optimizer: optim, val_losses: List[float], model_path: str, config: TrainConfig, s3: S3Storage):
+    torch.save({"epoch": epoch,
+        "model_state_dict": model.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict(),
+        "loss": val_losses[-1]}, model_path)
+    model_file_name = str(os.path.join(*model_path.split("/")[-3:]))        
+    model_path_in_bucket = os.path.join(config.local_storage.dir_name, model_file_name)
+    print(">> save model", model_path, os.path.exists(model_path))
+    print(">> uploaded model", model_path_in_bucket)
+    s3.upload_file(model_path, model_path_in_bucket)
+    
+    
+
 @app.command()
 def prepare_dataset(weight_val: float = 0.3, weight_test: float = 0.1):
     print("Preparing dataset")
