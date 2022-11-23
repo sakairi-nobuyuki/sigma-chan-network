@@ -1,8 +1,42 @@
 version: '3'
 
 services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    environment:
+      MINIO_ROOT_USER: sigma-chan
+      MINIO_ROOT_PASSWORD: sigma-chan-dayo
+    entrypoint: bash
+    command: -c "/opt/bin/minio server /export --address :9999 --console-address :9001;
+      mkdir -p /data/.minio.sys/buckets;
+      cp -r /policies/* /data/.minio.sys/;
+      /usr/bin/minio server /data"
+    volumes:
+      - ./data:/export
+      - ./minio/policies:/policies
+      - ./minio/config:/root/.minio
+    ports:
+      - "9000:9999"
+      - "9001:9001"
   app:
     build:
       context: ./
       dockerfile: Dockerfile
     container_name: sigma-chan-cnn
+    image: nsakairi/sigma-chan-network
+    ports:
+      - "5550:8888"
+    tty: true
+    stdin_open: true
+    ipc: host
+    volumes:
+      - "./data:/home/sigma_chan/data"
+#    deploy:
+#      resouces:
+#        reservations:
+#          devices:
+#            - capabilities: [gpu]            
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DEVICE_CAPABILITIES=all
