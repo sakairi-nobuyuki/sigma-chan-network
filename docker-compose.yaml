@@ -30,6 +30,8 @@ services:
     tty: true
     stdin_open: true
     ipc: host
+    volumes:
+      - "./data:/home/sigma_chan/data"
 #    deploy:
 #      resouces:
 #        reservations:
