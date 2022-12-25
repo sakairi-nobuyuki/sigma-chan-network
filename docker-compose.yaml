@@ -1,6 +1,30 @@
 version: '3'
 
 services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: sigma-chan-cnn
+    image: nsakairi/sigma-chan-network
+    ports:
+      - "5560:8888"
+    tty: true
+    stdin_open: true
+    ipc: host
+    volumes:
+      - "./data:/home/sigma_chan/data"
+      - "./sigma_chan_network:/home/sigma_chan/sigma_chan_network"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]      
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DEVICE_CAPABILITIES=all
   minio:
     image: minio/minio:latest
     container_name: minio
@@ -19,24 +43,3 @@ services:
     ports:
       - "9000:9999"
       - "9001:9001"
-  app:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    container_name: sigma-chan-cnn
-    image: nsakairi/sigma-chan-network
-    ports:
-      - "5550:8888"
-    tty: true
-    stdin_open: true
-    ipc: host
-    volumes:
-      - "./data:/home/sigma_chan/data"
-#    deploy:
-#      resouces:
-#        reservations:
-#          devices:
-#            - capabilities: [gpu]            
-    environment:
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DEVICE_CAPABILITIES=all

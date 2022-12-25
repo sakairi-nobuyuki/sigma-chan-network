@@ -1,5 +1,37 @@
 #FROM nvcr.io/nvidia/pytorch:22.10-py3
-FROM nvcr.io/nvidia/pytorch:20.03-py3
+#FROM nvcr.io/nvidia/pytorch:20.03-py3
+### Base image
+FROM nvidia/cuda:11.4.0-runtime-ubuntu20.04 as base
+
+FROM base as base-x86_64
+
+ENV NV_CUDNN_VERSION 8.6.0.163
+ENV NV_CUDNN_PACKAGE_NAME "libcudnn8"
+
+ENV NV_CUDNN_PACKAGE "libcudnn8=$NV_CUDNN_VERSION-1+cuda11.8"
+
+ENV TARGETARCH x86_64
+
+FROM base as base-arm64
+
+ENV NV_CUDNN_VERSION 8.6.0.163
+ENV NV_CUDNN_PACKAGE_NAME "libcudnn8"
+
+ENV NV_CUDNN_PACKAGE "libcudnn8=$NV_CUDNN_VERSION-1+cuda11.8"
+
+FROM base-x86_64
+
+ENV TARGETARCH x86_64
+
+LABEL maintainer "NVIDIA CORPORATION <cudatools@nvidia.com>"
+LABEL com.nvidia.cudnn.version="${NV_CUDNN_VERSION}"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ${NV_CUDNN_PACKAGE} \
+    && apt-mark hold ${NV_CUDNN_PACKAGE_NAME} \
+    && rm -rf /var/lib/apt/lists/*
+
+
 
 ### add a non-root user
 RUN apt update && apt install sudo
@@ -17,6 +49,8 @@ WORKDIR $HOME
 ENV POETRY_VERSION=1.2.0a1 \
     POETRY_HOME=$HOME
 
+
+
 ### install python and poetry
 RUN sudo apt install --no-install-recommends -y python3.8 python3-pip python3.8-dev \
     python3-setuptools python3-pip python3-distutils curl \
@@ -30,7 +64,7 @@ ENV PATH $PATH:$HOME/.poetry/bin:$HOME/.local/bin:$HOME/bin:$PATH
 ### install packages
 COPY ./poetry.lock $HOME/
 COPY ./pyproject.toml $HOME/
-RUN sudo chown -R $USERNAME .  
+RUN sudo chown -R $USERNAME .  && mkdir -p $HOME/.cache/pip/http && chown -R $USERNAME $HOME/.cache/pip/http
 
 RUN pip3 install poetry==${POETRY_VERSION}
 #RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=$POETRY_VERSION python -  && \
