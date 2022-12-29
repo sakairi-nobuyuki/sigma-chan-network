@@ -1,5 +1,3 @@
-#FROM nvcr.io/nvidia/pytorch:22.10-py3
-#FROM nvcr.io/nvidia/pytorch:20.03-py3
 ### Base image
 FROM nvidia/cuda:11.4.0-runtime-ubuntu20.04 as base
 
@@ -26,12 +24,15 @@ ENV TARGETARCH x86_64
 LABEL maintainer "NVIDIA CORPORATION <cudatools@nvidia.com>"
 LABEL com.nvidia.cudnn.version="${NV_CUDNN_VERSION}"
 
+
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ${NV_CUDNN_PACKAGE} \
     && apt-mark hold ${NV_CUDNN_PACKAGE_NAME} \
     && rm -rf /var/lib/apt/lists/*
 
-
+### Surface layer image
+#FROM ubuntu:20.04
 
 ### add a non-root user
 RUN apt update && apt install sudo
@@ -50,7 +51,6 @@ ENV POETRY_VERSION=1.2.0a1 \
     POETRY_HOME=$HOME
 
 
-
 ### install python and poetry
 RUN sudo apt install --no-install-recommends -y python3.8 python3-pip python3.8-dev \
     python3-setuptools python3-pip python3-distutils curl \
@@ -64,7 +64,9 @@ ENV PATH $PATH:$HOME/.poetry/bin:$HOME/.local/bin:$HOME/bin:$PATH
 ### install packages
 COPY ./poetry.lock $HOME/
 COPY ./pyproject.toml $HOME/
-RUN sudo chown -R $USERNAME .  && mkdir -p $HOME/.cache/pip/http && chown -R $USERNAME $HOME/.cache/pip/http
+RUN sudo chown -R $USERNAME .  && \
+    mkdir -p $HOME/.cache/pip/http && \
+    chown -R $USERNAME $HOME/.cache/pip/http
 
 RUN pip3 install poetry==${POETRY_VERSION}
 #RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=$POETRY_VERSION python -  && \
@@ -72,8 +74,14 @@ RUN poetry config virtualenvs.create false && \
     poetry export -f requirements.txt --output requirements.txt --without-hashes && \
     pip3 install -r requirements.txt --user --no-deps
 
+#ADD ./sigma_chan_network $HOME/sigma_chan_network
+#ENV PYTHONPATH $PYTHONPATH:$HOME/sigma_chan_network
+#:/usr/lib/python38.zip:/usr/lib/python3.8/lib-dynload:$HOME/.local/lib/python3.8/site-packages:/usr/local/lib/python3.8/dist-packages:/usr/lib/python3/dist-packages
+
+
 
 ### copy python codes
 COPY ./sigma_chan_network $HOME/sigma_chan_network/
-COPY ./scripts $HOME/scripts/
+#COPY ./scripts $HOME/scripts/
+COPY ./main.py $HOME/
 RUN sudo chown -R $USERNAME .  

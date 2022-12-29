@@ -11,11 +11,11 @@ import yaml
 import typer
 import os
 from pathlib import Path
-import shutil
-import glob
 from tqdm import tqdm
 from typing import List
 import json
+
+
 
 from sigma_chan_network.data_structure.configrators import TrainConfig
 from sigma_chan_network.components.models import SigmaChanCNN

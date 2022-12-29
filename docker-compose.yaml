@@ -15,6 +15,7 @@ services:
     volumes:
       - "./data:/home/sigma_chan/data"
       - "./sigma_chan_network:/home/sigma_chan/sigma_chan_network"
+      - "./scripts:/home/sigma_chan/scripts"
     deploy:
       resources:
         reservations:
