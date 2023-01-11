@@ -2,6 +2,8 @@ SRCS = sigma_chan_network tests
 TEST_TARGET = sigma_chan_network
 POETRY_PREFIX = poetry run
 LINTER_IGNORE = scripts
+CONTAINER_NAME = sigma-chan-cnn
+CONTAINER_REGISTORY = nsakairi
 PATH_TEST_COV_BADGE = pics/cov.svg
 
 format:
@@ -13,3 +15,8 @@ lint:
 test:
 	$(POETRY_PREFIX) pytest --cov=$(TEST_TARGET) --cov-fail-under 60
 	$(POETRY_PREFIX) coverage-badge -fo $(PATH_TEST_COV_BADGE)
+container:
+	docker compose build app
+	docker push $(CONTAINER_REGISTORY)/$(CONTAINER_NAME):latest
+push:
+	docker push $(CONTAINER_REGISTORY)/$(CONTAINER_NAME):latest

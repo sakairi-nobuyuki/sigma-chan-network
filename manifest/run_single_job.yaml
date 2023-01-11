@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sigma-chan-cnn
+  labels:
+    app: sigma-chan-cnn
+spec:
+  template:
+    spec:
+      containers:
+      - name: sigma-chan-cnn
+        image: nsakairi/sigma-chan-cnn@sha256:9a0da2d509a4c7ce013feaf4e90b5f8407378e5a16c8b53ce6f05fd9fd4fe45c
+        #                              sha256:2839bd9df20c4cd22ddf9eea6b1973dec49c9e941faa23efc6d652f45c9ad123
+        #                              sha256:328165073b14113e9026cf468ffcec940710c204044258abe2c05c39f542aae2
+        #                              sha256:68cd681da2a25671f70cbba0259ca43066aaed1ae7e91d68a2abcfc689f17997
+        #                             @sha256:7d1879427b6fc4e438e1680069f327a14a5a664ca4f411fd760bd40d8b12773e
+        env:
+        - name: ENDPOINT_URL
+          value: 192.168.1.194
+        command: [python, main.py, train]
+        args: [test_k8s, 
+          '{"cloud_storage": {
+              "endpoint_url": "http://192.168.1.194:9000",
+              "bucket_name": "getter-robo",
+              "access_id": "sigma-chan",
+              "access_key": "sigma-chan-dayo",
+              "dir_name": "train_data"
+            }, 
+            "local_storage": {
+              "dir_name": "data"
+            },
+            "model": {
+              "n_classes": 2,
+              "batch_size": 64
+            },
+            "dataset": {
+              "weight_val": 0.2,
+              "weight_test": 0.1},
+            "n_epoch": 50
+            }'
+        ]
+        ports:
+          - containerPort: 5560
+      restartPolicy: Never
